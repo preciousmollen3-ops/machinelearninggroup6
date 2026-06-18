@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lecturer Timetable</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+        main {
+            max-width: 960px;
+            margin: 28px auto;
+            padding: 0 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+        th, td {
+            border: 1px solid #e5e7eb;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background: #0f766e;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <h1>Lecturer Timetable</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Course</th>
+                    <th>Day</th>
+                    <th>Time</th>
+                    <th>Room</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in timetable %}
+                    <tr>
+                        <td>{{ entry.course.title }}</td>
+                        <td>{{ entry.day }}</td>
+                        <td>{{ entry.start_time|time:"H:i" }} - {{ entry.end_time|time:"H:i" }}</td>
+                        <td>{{ entry.room.name }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="4">No timetable entries found.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
+</body>
+</html>

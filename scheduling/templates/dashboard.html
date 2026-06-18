@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timetable Dashboard</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+        header {
+            background: #0f766e;
+            color: white;
+            padding: 18px 28px;
+        }
+        main {
+            max-width: 960px;
+            margin: 28px auto;
+            padding: 0 20px;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 18px;
+        }
+        .number {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        a {
+            color: #0f766e;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Smart Timetable Generation System</h1>
+    </header>
+    <main>
+        <section class="stats">
+            <div class="card">
+                <div class="number">{{ courses }}</div>
+                <div>Courses scheduled</div>
+            </div>
+            <div class="card">
+                <div class="number">{{ lecturers }}</div>
+                <div>Lecturers</div>
+            </div>
+            <div class="card">
+                <div class="number">{{ slots }}</div>
+                <div>Timetable slots</div>
+            </div>
+            <div class="card">
+                <div class="number">{{ predictions }}</div>
+                <div>Difficulty predictions</div>
+            </div>
+        </section>
+        <p><a href="/timetable/">View timetable</a></p>
+        <p><a href="/admin/">Open admin</a></p>
+    </main>
+</body>
+</html>
