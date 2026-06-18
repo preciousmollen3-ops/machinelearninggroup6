@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>University Timetable System</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background: #f5f5f5;
+    }
+
+    .container {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    h2 {
+        text-align: center;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+    }
+
+    th {
+        background: #333;
+        color: white;
+        padding: 10px;
+    }
+
+    td {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: center;
+    }
+
+    tr:nth-child(even) {
+        background: #f0f0f0;
+    }
+
+    .btn {
+        padding: 8px 12px;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .btn:hover {
+        background: #0056b3;
+    }
+
+    .filter {
+        margin-bottom: 15px;
+    }
+
+    select {
+        padding: 8px;
+        margin-right: 10px;
+    }
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+
+<h2>University Timetable System</h2>
+
+<form method="GET" class="filter">
+
+    <select name="program">
+        <option value="">All Programs</option>
+        {% for p in programs %}
+            <option value="{{ p.id }}">{{ p.name }}</option>
+        {% endfor %}
+    </select>
+
+    <select name="semester">
+        <option value="">All Semesters</option>
+        {% for s in semesters %}
+            <option value="{{ s.id }}">{{ s.name }}</option>
+        {% endfor %}
+    </select>
+
+    <button class="btn" type="submit">Filter</button>
+
+</form>
+
+<div style="margin-bottom:15px;">
+    <a href="/timetable/pdf/">
+        <button class="btn" type="button">
+            Download PDF
+        </button>
+    </a>
+</div>
+
+
+    <tr>
+        <th>Course</th>
+        <th>Lecturer</th>
+        <th>Room</th>
+        <th>Day</th>
+        <th>Start Time</th><table>
+<table>
+
+<tr>
+    <th>Time</th>
+    {% for day in days %}
+        <th>{{ day }}</th>
+    {% endfor %}
+</tr>
+
+{% for slot in slots %}
+
+<tr>
+    <td><b>{{ slot }}</b></td>
+
+    {% for day in days %}
+
+        <td>
+
+            {% for t in grid.slot.day %}
+
+                <div style="margin-bottom:5px; padding:5px; border:1px solid #ccc;">
+                    <b>{{ t.course }}</b><br>
+                    {{ t.lecturer }}<br>
+                    {{ t.room }}
+                </div>
+
+            {% empty %}
+                -
+            {% endfor %}
+
+        </td>
+
+    {% endfor %}
+
+</tr>
+
+{% endfor %}
+
+</table>
+        <th>End Time</th>
+        <th>Semester</th>
+    </tr>
+
+    {% for slot, day_map in grid.items %}
+
+        {% for day, t in day_map.items %}
+
+            {% if t %}
+
+            <tr>
+                <td>{{ t.course }}</td>
+                <td>{{ t.lecturer }}</td>
+                <td>{{ t.room }}</td>
+                <td>{{ t.day }}</td>
+                <td>{{ t.start_time }}</td>
+                <td>{{ t.end_time }}</td>
+                <td>{{ t.semester }}</td>
+            </tr>
+
+            {% endif %}
+
+        {% endfor %}
+
+    {% endfor %}
+
+</table>
+
+</div>
+
+</body>
+</html>

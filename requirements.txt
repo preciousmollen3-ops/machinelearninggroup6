@@ -1,0 +1,16 @@
+asgiref==3.11.1
+charset-normalizer==3.4.7
+Django==6.0.6
+joblib==1.5.3
+narwhals==2.22.1
+numpy==2.4.6
+pillow==12.2.0
+psycopg2-binary==2.9.12
+reportlab==4.5.1
+scikit-learn==1.9.0
+scipy==1.17.1
+sqlparse==0.5.5
+threadpoolctl==3.6.0
+tzdata==2026.2
+djangorestframework==3.17.1
+openpyxl==3.1.5
