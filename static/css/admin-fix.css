@@ -108,9 +108,20 @@ body.login-page .sidebar,
 body.login-page aside,
 body.login-page .left-column,
 body.login-page .app-sidebar,
+body.login-page #jazzy-sidebar,
+body.login-page .sidebar-wrapper,
+body.login-page .sidebar-brand,
+body.login-page .brand-link,
+body.login-page .navbar-nav,
+body.login-page .dropdown-menu,
 body.login-page .jazzmin-sidebar,
 body.login-page .sidebar-header,
-body.login-page .navbar-header {
+body.login-page .navbar-header,
+body.login-page .app-header,
+body.login-page #jazzy-navbar,
+body.login-page .app-footer,
+body.login-page .app-content-header,
+body.login-page .app-main {
 	display: none !important;
 }
 
