@@ -1,0 +1,200 @@
+<body class="layout-fixed sidebar-expand-lg sidebar-open bg-body-tertiary   login-page accent-primary theme-default" data-admin-utc-offset="0">
+
+    <div class="app-wrapper">
+
+    
+        <nav class="app-header navbar navbar-expand bg-body navbar-white navbar-light" id="jazzy-navbar">
+        <div class="container-fluid">
+            <ul class="navbar-nav">
+
+                
+                    <li class="nav-item">
+                        <a class="nav-link" data-lte-toggle="sidebar" href="#" role="button"><i class="fas fa-bars"></i></a>
+                    </li>
+                
+
+                
+                
+            </ul>
+
+            
+
+            <ul class="navbar-nav ms-auto">
+
+                
+                
+
+                
+
+                
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link btn" data-bs-toggle="dropdown" href="#" title="AnonymousUser">
+                        <i class="far fa-user" aria-hidden="true"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end" id="jazzy-usermenu">
+                        <span class="dropdown-header">Account</span>
+                        <div class="dropdown-divider"></div>
+                        <a href="/admin/password_change/" class="dropdown-item">
+                            <i class="fas fa-key me-2"></i> Change password
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <form id="logout-form" method="post" action="/admin/logout/">
+                            <input type="hidden" name="csrfmiddlewaretoken" value="dcT9GBfaySdlBw5BLXxWlkYZRrHTkl6LPfXdHHj0E0j32eOC1s7H4YyaMieE0arv">
+                            <button type="submit" class="dropdown-item"><i class="fas fa-users me-2"></i> Log out</button>
+                        </form>
+                        
+                        
+                        <div class="dropdown-divider"></div>
+                        
+                    </div>
+                </li>
+            </ul>
+        </div>
+        </nav>
+        
+        
+            
+
+            <aside class="app-sidebar bg-body-secondary shadow sidebar-dark-primary" id="jazzy-sidebar" data-bs-theme="dark">
+                <div class="sidebar-brand">
+                    <a href="/admin/" class="brand-link " id="jazzy-logo">
+                        <img src="/static/images/mzuni-admin-logo.png" alt="Mzuni Timetable System Admin Logo" class="img-fluid brand-image opacity-75 shadow">
+                        <span class="brand-text fw-light">Mzuni Timetable System</span>
+                    </a>
+                </div>
+
+                <div class="sidebar-wrapper">
+                    <div class="user-panel d-flex">
+                        <div class="image">
+                            
+                                <i class="fas fa-inverse user-profile fa-user-circle"></i>
+                            
+                        </div>
+                        <div class="info">
+                            
+                                <span class="d-block opacity-75">AnonymousUser</span>
+                            
+                        </div>
+                    </div>
+
+                    <nav class="mt-2">
+                        <ul class="nav sidebar-menu flex-column " data-lte-toggle="treeview" role="navigation" aria-label="Main navigation" data-accordion="false" id="jazzy-navigation">
+
+                            <li class="nav-item">
+                                <a href="/admin/" class="nav-link">
+                                    <i class="nav-icon fas fa-th-large"></i>
+                                    <p>Dashboard</p>
+                                </a>
+                            </li>
+
+                            
+                                
+                            
+                        </ul>
+                    </nav>
+                </div>
+            </aside>
+        
+        
+    
+
+    <main class="app-main" >
+        
+            
+            <div class="app-content-header">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h3 class="mb-0"></h3>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="float-sm-end"></div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+
+            <div class="app-content">
+                <div class="container-fluid">
+                    
+                        
+                    
+                    <div class="row">
+                        
+<div class="login-card">
+    <div class="login-brand">
+        <img src="/static/images/mzuni-admin-logo.png" alt="Mzuni Logo" />
+        <h1>Mzuni Admin</h1>
+    </div>
+    <p>Sign in to manage timetable data, lecturers, and scheduling records.</p>
+
+    <a class="back-link" href="/dashboard/">← Back to Dashboard</a>
+
+    
+
+    <form action="/admin/login/" method="post" id="login-form">
+        <input type="hidden" name="csrfmiddlewaretoken" value="dcT9GBfaySdlBw5BLXxWlkYZRrHTkl6LPfXdHHj0E0j32eOC1s7H4YyaMieE0arv">
+        <input type="hidden" name="next" value="/admin/" />
+
+        <div class="form-row">
+            <label for="id_username" class="required">Username:</label>
+            <input type="text" name="username" autofocus="" autocapitalize="none" autocomplete="username" maxlength="150" class="border border-base-200 bg-white font-medium min-w-20 placeholder-base-400 rounded-default shadow-xs text-font-default-light text-sm focus:outline-2 focus:-outline-offset-2 focus:outline-primary-600 group-[.errors]:border-red-600 focus:group-[.errors]:outline-red-600 dark:bg-base-900 dark:border-base-700 dark:text-font-default-dark dark:group-[.errors]:border-red-500 dark:focus:group-[.errors]:outline-red-500 dark:scheme-dark group-[.primary]:border-transparent disabled:!bg-base-50 dark:disabled:!bg-base-800 px-3 py-2 w-full" required id="id_username">
+        </div>
+
+        <div class="form-row">
+            <label for="id_password" class="required">Password:</label>
+            <input type="password" name="password" autocomplete="current-password" class="border border-base-200 bg-white font-medium min-w-20 placeholder-base-400 rounded-default shadow-xs text-font-default-light text-sm focus:outline-2 focus:-outline-offset-2 focus:outline-primary-600 group-[.errors]:border-red-600 focus:group-[.errors]:outline-red-600 dark:bg-base-900 dark:border-base-700 dark:text-font-default-dark dark:group-[.errors]:border-red-500 dark:focus:group-[.errors]:outline-red-500 dark:scheme-dark group-[.primary]:border-transparent disabled:!bg-base-50 dark:disabled:!bg-base-800 px-3 py-2 w-full" required id="id_password">
+        </div>
+
+        <div class="submit-row">
+            <input type="submit" value="Log in" class="btn" />
+        </div>
+    </form>
+    <a class="forgot-link" href="/accounts/password-reset/">Forgot password?</a>
+</div>
+
+                    </div>
+                </div>
+            </div>
+
+
+        
+    </main>
+
+
+    
+        <footer class="app-footer ">
+            <div class="float-end d-none d-sm-inline">
+                <b>Jazzmin version</b> 3.0.5
+            </div>
+            
+                <strong>Copyright &copy; 2026 Mzuni.</strong> All rights reserved.
+            
+        </footer>
+        
+    
+
+
+    </div>
+
+
+
+<!-- jQuery -->
+<script src="/static/admin/js/vendor/jquery/jquery.js"></script>
+<!-- Bootstrap 5 -->
+<script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App -->
+<script src="/static/vendor/adminlte/js/adminlte.min.js"></script>
+<!-- Django customisations -->
+<script src="/static/jazzmin/js/main.js"></script>
+
+
+
+
+
+
+
+</body>
