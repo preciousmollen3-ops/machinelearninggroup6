@@ -1,0 +1,249 @@
+/* Aggressive overrides to remove duplicate/oversized Mzuni logos injected by Jazzmin only on login/reset pages */
+body.login-page .sidebar img,
+body.login-page .sidebar .brand img,
+body.login-page .sidebar .logo img,
+body.login-page .navbar-brand img,
+body.login-page .header .logo img,
+body.login-page .jazzmin-logo img,
+body.login-page .branding-large img,
+body.login-page .site-header img,
+body.login-page .topbar img,
+body.password-reset-page .sidebar img,
+body.password-reset-page .sidebar .brand img,
+body.password-reset-page .sidebar .logo img,
+body.password-reset-page .navbar-brand img,
+body.password-reset-page .header .logo img,
+body.password-reset-page .jazzmin-logo img,
+body.password-reset-page .branding-large img,
+body.password-reset-page .site-header img,
+body.password-reset-page .topbar img { display:none !important; max-width:0 !important; max-height:0 !important; }
+
+/* Hide background images referencing mzuni logos on login/reset pages */
+body.login-page [style*="mzuni-admin-logo"],
+body.password-reset-page [style*="mzuni-admin-logo"] { background-image: none !important; }
+body.login-page [style*="mzuni-logo"],
+body.password-reset-page [style*="mzuni-logo"] { background-image: none !important; }
+
+/* Hide any element that contains the word 'mzuni' in its class or id */
+/* removed broad mzuni class/id rules so our compact logo isn't hidden */
+
+
+/* Hide Jazzmin top/header bar and left-side large branding blocks only on login/reset pages */
+body.login-page .topbar,
+body.login-page .navbar,
+body.login-page .navbar-header,
+body.login-page .site-header,
+body.login-page .header,
+body.login-page .jazzmin-topbar,
+body.login-page .jazzmin-header,
+body.login-page .brand,
+body.login-page .branding,
+body.login-page .sidebar-header,
+body.login-page .sidebar-brand,
+body.login-page .left-column .brand,
+body.login-page .jazzmin-branding,
+body.password-reset-page .topbar,
+body.password-reset-page .navbar,
+body.password-reset-page .navbar-header,
+body.password-reset-page .site-header,
+body.password-reset-page .header,
+body.password-reset-page .jazzmin-topbar,
+body.password-reset-page .jazzmin-header,
+body.password-reset-page .brand,
+body.password-reset-page .branding,
+body.password-reset-page .sidebar-header,
+body.password-reset-page .sidebar-brand,
+body.password-reset-page .left-column .brand,
+body.password-reset-page .jazzmin-branding {
+	display: none !important;
+}
+
+/* Hide any element that contains 'Mzuni Admin' text in top-level nav areas */
+/* Hide sidebar/navigation only on the login page so admin chrome is visible elsewhere */
+body.login-page .sidebar,
+body.login-page aside,
+body.login-page .left-column,
+body.login-page .app-sidebar,
+body.login-page .jazzmin-sidebar,
+body.login-page .sidebar-header,
+body.login-page .navbar-header {
+	display: none !important;
+}
+
+/* Hide all Jazzmin chrome on password reset pages */
+body.password-reset-page .sidebar,
+body.password-reset-page aside,
+body.password-reset-page .left-column,
+body.password-reset-page .app-sidebar,
+body.password-reset-page .jazzmin-sidebar,
+body.password-reset-page .sidebar-header,
+body.password-reset-page .navbar-header,
+body.password-reset-page .app-header,
+body.password-reset-page .main-header,
+body.password-reset-page .main-sidebar,
+body.password-reset-page .wrapper,
+body.password-reset-page .content-wrapper,
+body.password-reset-page .content,
+body.password-reset-page .content-header,
+body.password-reset-page .admin-footer,
+body.password-reset-page .main-footer,
+body.password-reset-page .footer,
+body.password-reset-page footer,
+body.password-reset-page .jazzmin-footer,
+body.password-reset-page .footerbar,
+body.password-reset-page .bottom-bar,
+body.password-reset-page .site-copyright,
+body.password-reset-page .jazzmin-version {
+	display: none !important;
+}
+
+/* Ensure our compact branding remains visible */
+.compact-branding, .compact-branding img { display:flex !important; align-items:center !important; }
+.compact-branding img { max-width:140px !important; max-height:140px !important; }
+
+/* Safety: don't break the login card */
+.login-card { display:block !important; }
+
+/* Hide footer, copyright and Jazzmin version line on admin pages */
+.footer, footer, .site-footer, .admin-footer, .copyright, .jazzmin-footer, .footerbar, .bottom-bar, .site-copyright, .jazzmin-version {
+	display: none !important;
+}
+
+/* Also hide small footer-like strips on login page */
+body.login-page .footer, body.login-page footer, body.login-page .site-footer { display: none !important; }
+
+/* Shared password reset / auth page styles */
+body.password-reset-page {
+  background: linear-gradient(180deg, #f3f7fb 0%, #eaf1f9 100%);
+}
+body.password-reset-page header,
+body.password-reset-page nav,
+body.password-reset-page .sidebar,
+body.password-reset-page .left-column,
+body.password-reset-page .right-column,
+body.password-reset-page .topbar,
+body.password-reset-page .navbar,
+body.password-reset-page .footer,
+body.password-reset-page .copyright,
+body.password-reset-page .jazzmin-sidebar,
+body.password-reset-page .jazzmin-topbar,
+body.password-reset-page .navbar-header,
+body.password-reset-page .site-header,
+body.password-reset-page .branding-large,
+body.password-reset-page .sidebar-header,
+body.password-reset-page .brand,
+body.password-reset-page .branding {
+  display: none !important;
+}
+body.password-reset-page .login-card {
+  max-width: 420px;
+  margin: 36px auto 0;
+  padding: 30px 26px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 24px 50px rgba(15, 23, 42, 0.11);
+}
+body.password-reset-page .login-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+body.password-reset-page .login-brand img {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  border-radius: 18px;
+  padding: 10px;
+  background: rgba(11, 100, 208, 0.08);
+  box-shadow: 0 12px 24px rgba(11, 100, 208, 0.12);
+}
+body.password-reset-page .login-brand h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  line-height: 1.2;
+  color: #102a43;
+}
+body.password-reset-page .login-brand span {
+  display: block;
+  font-size: 0.9rem;
+  color: #475569;
+}
+body.password-reset-page .login-card h1 {
+  margin: 0 0 1rem;
+  font-size: 1.95rem;
+  color: #102a43;
+}
+body.password-reset-page .login-card p {
+  margin: 0 0 1.5rem;
+  line-height: 1.75;
+  color: #334e68;
+}
+body.password-reset-page .login-card .form-row {
+  margin-bottom: 1.1rem;
+}
+body.password-reset-page .login-card label {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: #243b53;
+  font-size: 0.95rem;
+}
+body.password-reset-page .login-card input[type="email"],
+body.password-reset-page .login-card input[type="text"],
+body.password-reset-page .login-card input[type="password"] {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: 12px;
+  border: 1px solid #c8d4e3;
+  background: #f8fbff;
+  color: #102a43;
+  font-size: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+body.password-reset-page .login-card input:focus {
+  border-color: #5b7da3;
+  box-shadow: 0 0 0 4px rgba(91, 125, 163, 0.14);
+  outline: none;
+}
+body.password-reset-page .login-card .btn {
+  width: 100%;
+  min-height: 48px;
+  border-radius: 12px;
+  padding: 0 18px;
+  border: none;
+  background: #0b64d0;
+  color: white;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  box-shadow: 0 14px 28px rgba(11, 100, 208, 0.18);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+body.password-reset-page .login-card .btn:hover,
+body.password-reset-page .login-card .btn:focus {
+  transform: translateY(-1px);
+  background: #084fb0;
+}
+body.password-reset-page .login-card a,
+body.password-reset-page .login-card .back-link {
+  color: #0b64d0;
+  text-decoration: none;
+}
+body.password-reset-page .login-card .back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.7rem;
+  font-weight: 600;
+}
+body.password-reset-page .login-card .back-link:hover {
+  color: #054189;
+}
+@media (max-width: 540px) {
+  body.password-reset-page .login-card {
+    margin: 24px 16px;
+    padding: 24px 18px;
+  }
+}

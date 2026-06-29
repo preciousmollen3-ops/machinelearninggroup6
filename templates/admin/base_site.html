@@ -1,0 +1,115 @@
+{% extends "admin/base.html" %}
+{% load static i18n %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+    /* Hide large headers/banners only on login/reset screens */
+    body.login-page .jumbotron,
+    body.login-page .hero,
+    body.login-page .site-header,
+    body.login-page .admin-header,
+    body.login-page .branding-large,
+    body.login-page .login-hero,
+    body.login-page .header-banner,
+    body.login-page .site-banner,
+    body.password-reset-page .jumbotron,
+    body.password-reset-page .hero,
+    body.password-reset-page .site-header,
+    body.password-reset-page .admin-header,
+    body.password-reset-page .branding-large,
+    body.password-reset-page .login-hero,
+    body.password-reset-page .header-banner,
+    body.password-reset-page .site-banner {
+        display:none !important;
+    }
+
+    /* Constrain mzuni logo */
+    img[src*="mzuni-admin-logo"]{ max-width:140px !important; max-height:140px !important; width:auto !important; height:auto !important; display:inline-block !important; vertical-align:middle !important }
+    .compact-branding{ display:flex; align-items:center; gap:12px; font-weight:700; color:#fff; text-decoration:none }
+    .compact-branding .branding-text{ display:flex; flex-direction:column; line-height:1.1 }
+    .compact-branding .branding-title{ font-size: 1rem; letter-spacing: 0.02em; }
+    .compact-branding .branding-subtitle{ font-size: 0.78rem; color: rgba(255,255,255,0.85); margin-top: 1px }
+    body>img,body>.banner,.page-header>img{ display:none !important }
+
+    /* Hide Jazzmin-injected header/sidebar logos while keeping our compact branding visible on login/reset only */
+    body.login-page .sidebar .brand img,
+    body.login-page .navbar-brand img,
+    body.login-page .header .logo img,
+    body.login-page .jazzmin-logo img,
+    body.login-page .branding-large img,
+    body.login-page .sidebar .logo img,
+    body.login-page .site-header img,
+    body.password-reset-page .sidebar .brand img,
+    body.password-reset-page .navbar-brand img,
+    body.password-reset-page .header .logo img,
+    body.password-reset-page .jazzmin-logo img,
+    body.password-reset-page .branding-large img,
+    body.password-reset-page .sidebar .logo img,
+    body.password-reset-page .site-header img {
+        display: none !important;
+    }
+
+    /* Ensure our compact-branding logo remains visible and constrained */
+    .compact-branding img { display: inline-block !important; max-width: 140px !important; max-height: 140px !important; }
+
+    /* Jazzmin admin sidebar brand overrides */
+    .app-sidebar .sidebar-brand {
+        background: rgba(11, 100, 208, 0.08) !important;
+    }
+    .app-sidebar .sidebar-brand .brand-link {
+        display: flex !important;
+        align-items: center !important;
+        gap: 0.75rem !important;
+        padding: 0.85rem 1rem !important;
+    }
+    .app-sidebar .sidebar-brand .brand-image {
+        width: 44px !important;
+        height: 44px !important;
+        object-fit: contain !important;
+        opacity: 1 !important;
+    }
+    .app-sidebar .sidebar-brand .brand-text {
+        color: #ffffff !important;
+        font-size: 0.95rem !important;
+        font-weight: 700 !important;
+        line-height: 1.1 !important;
+        white-space: normal !important;
+        opacity: 1 !important;
+    }
+    .app-sidebar .sidebar-brand .brand-text::after {
+        content: "Admin";
+        display: block;
+        margin-top: 0.1rem;
+        font-size: 0.78rem;
+        font-weight: 400;
+        color: rgba(255,255,255,0.78) !important;
+    }
+    .app-header .navbar-nav::before {
+        content: "Mzuni Timetable System Admin";
+        color: #ffffff;
+        font-size: 0.95rem;
+        font-weight: 700;
+        margin-right: 1rem;
+        white-space: nowrap;
+        display: inline-flex;
+        align-items: center;
+    }
+
+</style>
+{% comment %} Include a static CSS file to forcibly override any cached Jazzmin styles {% endcomment %}
+<link rel="stylesheet" href="{% static 'css/admin-fix.css' %}?v=2">
+{% endblock %}
+
+{% block branding %}
+<a href="{% url 'admin:index' %}" class="compact-branding">
+    <img src="{% static 'images/mzuni-admin-logo.png' %}" alt="Mzuni Logo" />
+    <div class="branding-text">
+        <span class="branding-title">Mzuni Timetable System</span>
+        <span class="branding-subtitle">Admin</span>
+    </div>
+</a>
+{% endblock %}
+
+{# removed aggressive DOM script that was deleting our compact logo #}
+

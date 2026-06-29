@@ -162,3 +162,16 @@ class SystemControl(models.Model):
 
     def __str__(self):
         return "System Control"
+
+
+class PasswordResetCode(models.Model):
+    user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    code = models.CharField(max_length=12)
+    created_at = models.DateTimeField(auto_now_add=True)
+    used = models.BooleanField(default=False)
+
+    class Meta:
+        indexes = [models.Index(fields=['code']), models.Index(fields=['created_at'])]
+
+    def __str__(self):
+        return f"PasswordResetCode({self.user.email} - {self.code})"

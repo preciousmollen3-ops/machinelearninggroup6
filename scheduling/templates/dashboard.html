@@ -7,68 +7,291 @@
     <style>
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f5f7fb;
-            color: #1f2937;
+            font-family: Inter, system-ui, sans-serif;
+            background: radial-gradient(circle at top, #d1e8ff 0%, #f3f7ff 35%, #eef3fb 100%);
+            color: #0f172a;
         }
-        header {
-            background: #0f766e;
-            color: white;
-            padding: 18px 28px;
+        .page {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 32px 24px 48px;
         }
-        main {
-            max-width: 960px;
-            margin: 28px auto;
-            padding: 0 20px;
-        }
-        .stats {
+        .hero {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 24px;
+            grid-template-columns: 1fr;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+        .hero-header {
+            display: flex;
+            align-items: center;
             gap: 16px;
+            flex-wrap: wrap;
+        }
+        .hero-header img {
+            width: auto;
+            height: 72px;
+            max-width: 100%;
+            object-fit: contain;
+            border-radius: 16px;
+            background: rgba(255,255,255,0.7);
+            padding: 8px;
+        }
+        .hero h1 {
+            margin: 0;
+            font-size: clamp(2rem, 3vw, 3.25rem);
+            line-height: 1.05;
+        }
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+        }
+        .button,
+        .secondary-button {
+            border: none;
+            border-radius: 999px;
+            padding: 14px 24px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .button {
+            background: #2563eb;
+            color: white;
+        }
+        .secondary-button {
+            background: white;
+            color: #0f172a;
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+        }
+        .stats-grid {
+            display: grid;
+            gap: 18px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            margin-bottom: 28px;
+        }
+        .stat-card {
+            background: rgba(255, 255, 255, 0.92);
+            border: 1px solid rgba(148, 163, 184, 0.25);
+            border-radius: 24px;
+            padding: 26px;
+            box-shadow: 0 16px 40px rgba(15, 23, 42, 0.06);
+        }
+        .stat-card h2 {
+            margin: 0 0 10px;
+            font-size: 0.95rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: #334155;
+        }
+        .stat-card .value {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+        .panel-grid {
+            display: grid;
+            gap: 20px;
+            grid-template-columns: 1.3fr 0.9fr;
+        }
+        .panel {
+            background: white;
+            border-radius: 24px;
+            padding: 26px;
+            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.06);
+        }
+        .panel.filter-panel {
             margin-bottom: 24px;
         }
-        .card {
+        .panel h3 {
+            margin: 0 0 18px;
+            font-size: 1.1rem;
+        }
+        .panel table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 14px;
+        }
+        .panel th,
+        .panel td {
+            padding: 14px 12px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .panel th {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #475569;
+        }
+        .panel td {
+            font-size: 0.95rem;
+            color: #0f172a;
+        }
+        .section-row {
+            display: grid;
+            gap: 18px;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            margin-bottom: 24px;
+        }
+        .filter-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            width: 100%;
+        }
+        .filter-group label {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: #334155;
+            min-width: 220px;
+            flex: 1;
+        }
+        .filter-group button {
+            min-width: 160px;
+        }
+        select {
+            border-radius: 16px;
+            border: 1px solid #cbd5e1;
+            padding: 12px 14px;
             background: white;
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            padding: 18px;
+            min-width: 180px;
         }
-        .number {
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 6px;
+        .empty-state {
+            padding: 28px;
+            text-align: center;
+            color: #64748b;
         }
-        a {
-            color: #0f766e;
-            font-weight: 700;
+        @media (max-width: 860px) {
+            .panel-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Smart Timetable Generation System</h1>
-    </header>
-    <main>
-        <section class="stats">
-            <div class="card">
-                <div class="number">{{ courses }}</div>
-                <div>Courses scheduled</div>
+    <div class="page">
+        <div class="hero">
+            <div>
+                <div class="hero-header">
+                    <img src="/static/images/mzuni-logo.png" alt="Mzuni Logo" />
+                    <h1>Timetable Dashboard</h1>
+                </div>
+                <p style="max-width: 680px; color: #475569; font-size: 1rem; margin-top: 12px;">Review generated schedules, monitor lecturers, and export the latest timetable data from this central dashboard.</p>
             </div>
-            <div class="card">
-                <div class="number">{{ lecturers }}</div>
-                <div>Lecturers</div>
+            <div class="hero-actions">
+                <a href="{% url 'open_admin' %}" class="secondary-button">Open Admin</a>
+                <a href="/api/timetable/export/?all_programs=1" class="button">Download Excel</a>
             </div>
-            <div class="card">
-                <div class="number">{{ slots }}</div>
-                <div>Timetable slots</div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h2>Courses Scheduled</h2>
+                <p class="value">{{ courses }}</p>
             </div>
-            <div class="card">
-                <div class="number">{{ predictions }}</div>
-                <div>Difficulty predictions</div>
+            <div class="stat-card">
+                <h2>Lecturers</h2>
+                <p class="value">{{ lecturers }}</p>
             </div>
-        </section>
-        <p><a href="/timetable/">View timetable</a></p>
-        <p><a href="/admin/">Open admin</a></p>
-    </main>
+            <div class="stat-card">
+                <h2>Slots</h2>
+                <p class="value">{{ slots }}</p>
+            </div>
+            <div class="stat-card">
+                <h2>Predictions</h2>
+                <p class="value">{{ predictions }}</p>
+            </div>
+        </div>
+
+        <div class="panel filter-panel">
+            <div class="filter-group">
+                <form method="GET" style="display:flex; flex-wrap:wrap; gap:14px; align-items:flex-end; width:100%;">
+                    <label>
+                        Program
+                        <select name="program">
+                            <option value="">All programs</option>
+                            {% for p in programs %}
+                                <option value="{{ p.id }}" {% if selected_program and selected_program.id == p.id %}selected{% endif %}>{{ p.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </label>
+                    <label>
+                        Semester
+                        <select name="semester">
+                            <option value="">Current semester</option>
+                            {% for s in semesters %}
+                                <option value="{{ s.id }}" {% if selected_semester and selected_semester.id == s.id %}selected{% endif %}>{{ s.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </label>
+                    <button type="submit" class="button">Apply Filter</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="panel-grid">
+            <section class="panel">
+                <h3>Program overview</h3>
+                {% if programs %}
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Program</th>
+                                <th>Courses</th>
+                                <th>Slots</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for program in programs %}
+                                <tr>
+                                    <td>{{ program.name }}</td>
+                                    <td>{{ program.course_set.count }}</td>
+                                    <td>{{ program.timetable_set.count }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <div class="empty-state">No program data available yet. Add programs in the admin and generate a timetable to populate this view.</div>
+                {% endif %}
+            </section>
+
+            <section class="panel">
+                <h3>Recent timetable entries</h3>
+                {% if recent_entries %}
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Program</th>
+                                <th>Course</th>
+                                <th>Room</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for entry in recent_entries %}
+                                <tr>
+                                    <td>{{ entry.program.code }}</td>
+                                    <td>{{ entry.course.code }}</td>
+                                    <td>{{ entry.room.name }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <div class="empty-state">No entries yet</div>
+                {% endif %}
+            </section>
+        </div>
+    </div>
 </body>
 </html>

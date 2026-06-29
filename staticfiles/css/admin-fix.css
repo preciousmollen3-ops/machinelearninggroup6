@@ -1,0 +1,43 @@
+/* Aggressive overrides to remove duplicate/oversized Mzuni logos injected by Jazzmin */
+/* Hide images inside common header/sidebar containers */
+.sidebar img, .sidebar .brand img, .sidebar .logo img, .navbar-brand img, .header .logo img, .jazzmin-logo img, .branding-large img, .site-header img, .topbar img { display:none !important; max-width:0 !important; max-height:0 !important; }
+
+/* Hide background images referencing mzuni logos */
+[style*="mzuni-admin-logo"] { background-image: none !important; }
+[style*="mzuni-logo"] { background-image: none !important; }
+
+/* Hide any element that contains the word 'mzuni' in its class or id */
+/* removed broad mzuni class/id rules so our compact logo isn't hidden */
+
+
+/* Hide Jazzmin top/header bar and left-side large branding blocks */
+.topbar, .navbar, .navbar-header, .site-header, .header, .jazzmin-topbar, .jazzmin-header, .brand, .branding, .sidebar-header, .sidebar-brand, .left-column .brand, .jazzmin-branding {
+	display: none !important;
+}
+
+/* Hide any element that contains 'Mzuni Admin' text in top-level nav areas */
+/* Hide sidebar/navigation only on the login page so admin chrome is visible elsewhere */
+body.login-page .sidebar,
+body.login-page aside,
+body.login-page .left-column,
+body.login-page .app-sidebar,
+body.login-page .jazzmin-sidebar,
+body.login-page .sidebar-header,
+body.login-page .navbar-header {
+	display: none !important;
+}
+
+/* Ensure our compact branding remains visible */
+.compact-branding, .compact-branding img { display:flex !important; align-items:center !important; }
+.compact-branding img { max-width:140px !important; max-height:140px !important; }
+
+/* Safety: don't break the login card */
+.login-card { display:block !important; }
+
+/* Hide footer, copyright and Jazzmin version line on admin pages */
+.footer, footer, .site-footer, .admin-footer, .copyright, .jazzmin-footer, .footerbar, .bottom-bar, .site-copyright, .jazzmin-version {
+	display: none !important;
+}
+
+/* Also hide small footer-like strips on login page */
+body.login-page .footer, body.login-page footer, body.login-page .site-footer { display: none !important; }

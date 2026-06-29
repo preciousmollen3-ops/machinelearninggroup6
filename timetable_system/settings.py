@@ -39,6 +39,8 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
+    "jazzmin",
+    "unfold",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -64,7 +66,9 @@ ROOT_URLCONF = "timetable_system.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [
+            BASE_DIR / "templates",
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -131,3 +135,54 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
+LOGIN_URL = "/admin/login/"
+LOGOUT_REDIRECT_URL = "/admin/login/"
+
+# Email settings (development defaults). Override with env vars in production.
+EMAIL_BACKEND = os.getenv("EMAIL_BACKEND", "django.core.mail.backends.console.EmailBackend")
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "no-reply@mzuni.local")
+
+JAZZMIN_SETTINGS = {
+    "site_title": "Mzuni Timetable System Admin",
+    "site_header": "Mzuni Timetable System Admin",
+    "site_brand": "Mzuni Timetable System",
+    "welcome_sign": "Welcome to Mzuni Timetable System Admin",
+    "copyright": "Mzuni",
+    "show_sidebar": True,
+    "navigation_expanded": True,
+    "custom_css": None,
+    "icons": {},
+    "order_with_respect_to": [],
+    "topmenu_links": [],
+    "show_ui_builder": False,
+    "hide_models": [],
+    "show_app_icon": False,
+    "site_logo": "images/mzuni-admin-logo.png",
+    "site_logo_classes": "img-fluid",
+    "login_logo": "images/mzuni-admin-logo.png",
+    "login_logo_classes": "img-fluid",
+}
+
+JAZZMIN_UI_TWEAKS = {
+    "theme": "dark",
+    "dark_mode_theme": "dark",
+}
+
+UNFOLD = {
+    "SITE_TITLE": "Mzuni Admin",
+    "SITE_HEADER": "Mzuni Admin",
+    "SITE_URL": "/",
+    "SHOW_HISTORY": True,
+    "SHOW_VIEW_ON_SITE": True,
+    "STYLES": [
+        {
+            "vendor": "simplelightbox",
+            "css": "",
+        }
+    ],
+    "TABS": [],
+}

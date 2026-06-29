@@ -1,0 +1,45 @@
+{% extends "admin/base.html" %}
+{% load static i18n %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+    /* Hide any large hero/header containers Jazzmin may inject */
+    .jumbotron, .hero, .site-header, .admin-header, .branding-large, .login-hero, .login-hero img, .header-banner, .site-banner {
+        display: none !important;
+    }
+
+    /* Constrain any mzuni logo images and ensure compact branding */
+    img[src*="mzuni-admin-logo"] {
+        max-width: 140px !important;
+        max-height: 140px !important;
+        width: auto !important;
+        height: auto !important;
+        display: inline-block !important;
+        vertical-align: middle !important;
+    }
+
+    .compact-branding {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 700;
+        color: #fff;
+    }
+
+    /* Strong rule: hide any direct body-level images that may be injected as banners */
+    body > img, body > .banner, .page-header > img {
+        display: none !important;
+    }
+
+    /* Ensure our compact branding is shown */
+    .compact-branding { display: flex !important; }
+</style>
+{% endblock %}
+
+{% block branding %}
+<a href="{% url 'admin:index' %}" class="compact-branding">
+    <img src="{% static 'images/mzuni-admin-logo.png' %}" alt="Mzuni Logo" />
+    <span>Mzuni Admin</span>
+</a>
+{% endblock %}

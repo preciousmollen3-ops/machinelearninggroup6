@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth import logout
 from django.http import HttpResponse
 from reportlab.pdfgen import canvas
 from collections import defaultdict
@@ -43,12 +44,59 @@ def detect_conflicts(queryset):
 # DASHBOARD
 # =========================
 def dashboard(request):
-    return render(request, "dashboard.html", {
-        "courses": Timetable.objects.values("course").distinct().count(),
+    if request.user.is_authenticated and request.user.is_staff:
+        logout(request)
+
+    programs = Program.objects.all()
+    semesters = Semester.objects.all()
+
+    selected_program_id = request.GET.get("program")
+    selected_semester_id = request.GET.get("semester")
+
+    selected_program = None
+    selected_semester = None
+
+    if selected_program_id:
+        try:
+            selected_program = Program.objects.filter(id=int(selected_program_id)).first()
+        except (TypeError, ValueError):
+            selected_program = None
+
+    if selected_semester_id:
+        try:
+            selected_semester = Semester.objects.filter(id=int(selected_semester_id)).first()
+        except (TypeError, ValueError):
+            selected_semester = None
+
+    timetable_qs = Timetable.objects.all()
+    if selected_program:
+        timetable_qs = timetable_qs.filter(program=selected_program)
+    if selected_semester:
+        timetable_qs = timetable_qs.filter(semester=selected_semester)
+
+    context = {
+        "programs": programs,
+        "semesters": semesters,
+        "selected_program": selected_program,
+        "selected_semester": selected_semester,
+        "courses": timetable_qs.values("course").distinct().count(),
         "lecturers": Lecturer.objects.count(),
-        "slots": Timetable.objects.count(),
-        "predictions": CourseDifficultyPrediction.objects.count()
-    })
+        "slots": timetable_qs.count(),
+        "predictions": CourseDifficultyPrediction.objects.count(),
+        "recent_entries": Timetable.objects.select_related("program", "course", "room").order_by("-id")[:5],
+    }
+
+    return render(request, "dashboard.html", context)
+
+
+def open_admin(request):
+    if request.user.is_authenticated:
+        logout(request)
+    return redirect('/admin/login/?next=/admin/')
+
+
+def landing(request):
+    return render(request, "landing.html")
 
 
 # =========================
@@ -59,9 +107,24 @@ from collections import defaultdict
 
 def timetable_view(request):
 
+    program_id = request.GET.get("program")
+    semester_id = request.GET.get("semester")
+
     data = Timetable.objects.select_related(
-        "course", "lecturer", "room", "semester"
+        "course", "lecturer", "room", "semester", "program"
     )
+
+    if program_id:
+        try:
+            data = data.filter(program_id=int(program_id))
+        except (TypeError, ValueError):
+            pass
+
+    if semester_id:
+        try:
+            data = data.filter(semester_id=int(semester_id))
+        except (TypeError, ValueError):
+            pass
 
     # each cell can hold MULTIPLE classes
     grid = {slot: {day: [] for day in DAYS} for slot in SLOTS}
@@ -69,17 +132,28 @@ def timetable_view(request):
     for t in data:
         time_key = t.start_time.strftime("%H:%M")
 
-        if time_key in grid:
-            if t.day in grid[time_key]:
-                grid[time_key][t.day].append(t)
+        if time_key in grid and t.day in grid[time_key]:
+            grid[time_key][t.day].append(t)
+
+    rows = [
+        {
+            "slot": slot,
+            "cells": [grid[slot][day] for day in DAYS],
+        }
+        for slot in SLOTS
+    ]
 
     return render(request, "timetable.html", {
-        "grid": grid,
+        "rows": rows,
         "days": DAYS,
         "slots": SLOTS,
         "programs": Program.objects.all(),
-        "semesters": Semester.objects.all()
+        "semesters": Semester.objects.all(),
+        "selected_program": int(program_id) if program_id and program_id.isdigit() else None,
+        "selected_semester": int(semester_id) if semester_id and semester_id.isdigit() else None,
     })
+
+
 # =========================
 # LECTURER VIEW
 # =========================
@@ -134,6 +208,64 @@ from io import BytesIO
 
 from .serializers import CourseSerializer, TimetableSerializer, DifficultySerializer
 from .services.scheduler import generate_timetable, DEFAULT_SLOTS
+
+# Password reset by code
+from django.contrib.auth.models import User
+from django.shortcuts import redirect
+from django.utils import timezone
+from django.core.mail import send_mail
+from django.urls import reverse
+from django.contrib import messages
+from .models import PasswordResetCode
+import random
+import string
+from datetime import timedelta
+
+
+def password_reset_request(request):
+    if request.method == "POST":
+        email = request.POST.get("email")
+        user = User.objects.filter(email__iexact=email).first()
+        if user:
+            code = ''.join(random.choices(string.digits, k=6))
+            PasswordResetCode.objects.create(user=user, code=code)
+            # send email with code
+            subject = "Your password reset code"
+            message = f"Use this code to reset your password: {code}\nThis code expires in 30 minutes.\n"
+            send_mail(subject, message, None, [user.email], fail_silently=False)
+        return render(request, "registration/password_reset_sent.html", {"email": email})
+    return render(request, "registration/password_reset_request.html")
+
+
+def password_reset_verify(request):
+    if request.method == "POST":
+        email = request.POST.get("email")
+        code = request.POST.get("code")
+        password = request.POST.get("password")
+
+        user = User.objects.filter(email__iexact=email).first()
+        if not user:
+            messages.error(request, "No account with that email")
+            return redirect(reverse('password_reset_request'))
+
+        prc = PasswordResetCode.objects.filter(user=user, code=code, used=False).order_by('-created_at').first()
+        if not prc:
+            messages.error(request, "Invalid code")
+            return redirect(reverse('password_reset_verify'))
+
+        # expiry 30 minutes
+        if timezone.now() - prc.created_at > timedelta(minutes=30):
+            messages.error(request, "Code expired")
+            return redirect(reverse('password_reset_request'))
+
+        # set password
+        user.set_password(password)
+        user.save()
+        prc.used = True
+        prc.save()
+        return render(request, "registration/password_reset_complete.html")
+
+    return render(request, "registration/password_reset_verify.html")
 
 
 @api_view(["POST"])
