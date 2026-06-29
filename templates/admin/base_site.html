@@ -40,18 +40,8 @@
         display:none !important;
     }
 
-    /* Hide everything except the custom login/reset card on auth pages */
-    body.login :not(.login-card):not(.login-card *),
-    body.login-page :not(.login-card):not(.login-card *),
-    body.password-reset :not(.login-card):not(.login-card *),
-    body.password-reset-page :not(.login-card):not(.login-card *) {
-        display: none !important;
-    }
-
-    body.login .login-card,
-    body.login-page .login-card,
-    body.password-reset .login-card,
-    body.password-reset-page .login-card {
+    /* Keep the custom login card visible without hiding its wrapper containers */
+    .login-card {
         display: block !important;
         position: relative !important;
         z-index: 9999 !important;
