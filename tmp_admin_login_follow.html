@@ -1,0 +1,430 @@
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en-us" >
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <!--  Prevent admin panel being crawled by search engines -->
+    <meta name="robots" content="none, noarchive">
+    <script>
+        (function() {
+            var mode = localStorage.getItem('jazzmin-theme-mode') || 'auto';
+            if (mode === 'auto') {
+                mode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            }
+            document.documentElement.setAttribute('data-bs-theme', mode);
+        })();
+    </script>
+
+    <title>Log in | Mzuni Timetable System Admin</title>
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="/static/vendor/fontawesome-free/css/all.min.css">
+
+    <!-- Bootstrap and adminLTE -->
+    <link rel="stylesheet" href="/static/vendor/adminlte/css/adminlte.min.css" id="adminlte-css">
+
+    <!-- Bootswatch theme -->
+    <link rel="stylesheet"  id="jazzmin-theme" data-theme-base="/static/vendor/bootswatch" />
+    
+
+    <!-- Custom fixes for django -->
+    <link rel="stylesheet" href="/static/jazzmin/css/main.css">
+
+    
+
+    <!-- favicons -->
+    <link rel="shortcut icon" href="/static/images/mzuni-admin-logo.png" type="image/png">
+    <link rel="icon" href="/static/images/mzuni-admin-logo.png" sizes="32x32" type="image/png">
+
+    
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    
+
+    
+
+ 
+<style>
+    /* Hide large headers/banners only on login/reset screens */
+    body.login .jumbotron,
+    body.login .hero,
+    body.login .site-header,
+    body.login .admin-header,
+    body.login .branding-large,
+    body.login .login-hero,
+    body.login .header-banner,
+    body.login .site-banner,
+    body.login-page .jumbotron,
+    body.login-page .hero,
+    body.login-page .site-header,
+    body.login-page .admin-header,
+    body.login-page .branding-large,
+    body.login-page .login-hero,
+    body.login-page .header-banner,
+    body.login-page .site-banner,
+    body.password-reset .jumbotron,
+    body.password-reset .hero,
+    body.password-reset .site-header,
+    body.password-reset .admin-header,
+    body.password-reset .branding-large,
+    body.password-reset .login-hero,
+    body.password-reset .header-banner,
+    body.password-reset .site-banner,
+    body.password-reset-page .jumbotron,
+    body.password-reset-page .hero,
+    body.password-reset-page .site-header,
+    body.password-reset-page .admin-header,
+    body.password-reset-page .branding-large,
+    body.password-reset-page .login-hero,
+    body.password-reset-page .header-banner,
+    body.password-reset-page .site-banner {
+        display:none !important;
+    }
+
+    /* Keep the custom login card visible without hiding its wrapper containers */
+    .login-card {
+        display: block !important;
+        position: relative !important;
+        z-index: 9999 !important;
+    }
+
+    /* Constrain mzuni logo */
+    img[src*="mzuni-admin-logo"]{ max-width:140px !important; max-height:140px !important; width:auto !important; height:auto !important; display:inline-block !important; vertical-align:middle !important }
+    .compact-branding{ display:flex; align-items:center; gap:12px; font-weight:700; color:#fff; text-decoration:none }
+    .compact-branding .branding-text{ display:flex; flex-direction:column; line-height:1.1 }
+    .compact-branding .branding-title{ font-size: 1rem; letter-spacing: 0.02em; }
+    .compact-branding .branding-subtitle{ font-size: 0.78rem; color: rgba(255,255,255,0.85); margin-top: 1px }
+    body>img,body>.banner,.page-header>img{ display:none !important }
+
+    /* Hide Jazzmin-injected header/sidebar logos while keeping our compact branding visible on login/reset only */
+    body.login .sidebar .brand img,
+    body.login .navbar-brand img,
+    body.login .header .logo img,
+    body.login .jazzmin-logo img,
+    body.login .branding-large img,
+    body.login .sidebar .logo img,
+    body.login .site-header img,
+    body.login-page .sidebar .brand img,
+    body.login-page .navbar-brand img,
+    body.login-page .header .logo img,
+    body.login-page .jazzmin-logo img,
+    body.login-page .branding-large img,
+    body.login-page .sidebar .logo img,
+    body.login-page .site-header img,
+    body.password-reset .sidebar .brand img,
+    body.password-reset .navbar-brand img,
+    body.password-reset .header .logo img,
+    body.password-reset .jazzmin-logo img,
+    body.password-reset .branding-large img,
+    body.password-reset .sidebar .logo img,
+    body.password-reset .site-header img,
+    body.password-reset-page .sidebar .brand img,
+    body.password-reset-page .navbar-brand img,
+    body.password-reset-page .header .logo img,
+    body.password-reset-page .jazzmin-logo img,
+    body.password-reset-page .branding-large img,
+    body.password-reset-page .sidebar .logo img,
+    body.password-reset-page .site-header img {
+        display: none !important;
+    }
+
+    /* Ensure our compact-branding logo remains visible and constrained */
+    .compact-branding img { display: inline-block !important; max-width: 140px !important; max-height: 140px !important; }
+
+    /* Jazzmin admin sidebar brand overrides */
+    .app-sidebar .sidebar-brand {
+        background: rgba(11, 100, 208, 0.08) !important;
+    }
+    .app-sidebar .sidebar-brand .brand-link {
+        display: flex !important;
+        align-items: center !important;
+        gap: 0.75rem !important;
+        padding: 0.85rem 1rem !important;
+    }
+    .app-sidebar .sidebar-brand .brand-image {
+        width: 44px !important;
+        height: 44px !important;
+        object-fit: contain !important;
+        opacity: 1 !important;
+    }
+    .app-sidebar .sidebar-brand .brand-text {
+        color: #ffffff !important;
+        font-size: 0.95rem !important;
+        font-weight: 700 !important;
+        line-height: 1.1 !important;
+        white-space: normal !important;
+        opacity: 1 !important;
+    }
+    .app-sidebar .sidebar-brand .brand-text::after {
+        content: "Admin";
+        display: block;
+        margin-top: 0.1rem;
+        font-size: 0.78rem;
+        font-weight: 400;
+        color: rgba(255,255,255,0.78) !important;
+    }
+    .app-header .navbar-nav::before {
+        content: "Mzuni Timetable System Admin";
+        color: #ffffff;
+        font-size: 0.95rem;
+        font-weight: 700;
+        margin-right: 1rem;
+        white-space: nowrap;
+        display: inline-flex;
+        align-items: center;
+    }
+
+</style>
+
+<link rel="stylesheet" href="/static/css/admin-fix.css?v=2">
+
+<style>
+    body.login-page { margin:0; min-height:100vh; font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: linear-gradient(135deg,#04152f 0%,#0f2b59 45%,#123d73 100%); color:#f8fafc; }
+    body.login-page header,
+    body.login-page nav,
+    body.login-page .sidebar,
+    body.login-page .left-column,
+    body.login-page .right-column,
+    body.login-page .topbar,
+    body.login-page .navbar,
+    body.login-page .footer,
+    body.login-page .copyright,
+    body.login-page .jazzmin-sidebar,
+    body.login-page .jazzmin-topbar,
+    body.login-page .navbar-header,
+    body.login-page .site-header,
+    body.login-page .branding-large,
+    body.login-page .sidebar-header,
+    body.login-page .brand,
+    body.login-page .branding {
+        display: none !important;
+    }
+    .login-page{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px}
+    .login-card{width:min(460px,100%);background:rgba(10,18,32,0.94);border-radius:24px;padding:36px 32px;border:1px solid rgba(255,255,255,0.12);box-shadow:0 24px 80px rgba(2,8,23,0.45);backdrop-filter:blur(16px)}
+    html, body {height:100%;}
+    .login-card { margin: auto; position: relative; top: 0; transform: none; }
+    .login-brand{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:12px}
+    .login-brand img{width:72px;height:72px;object-fit:contain;border-radius:16px;background:white;padding:8px;box-shadow:0 10px 24px rgba(15,23,42,0.2)}
+    h1{margin:0 0 8px;font-size:1.7rem;color:white;text-align:center}
+    p{margin:0 0 24px;text-align:center;color:rgba(226,232,240,0.8)}
+    .back-link{display:inline-flex;align-items:center;justify-content:center;width:auto;max-width:320px;margin:0 auto 18px;padding:8px 12px;border-radius:18px;text-decoration:none;color:#dbeafe;background:rgba(59,130,246,0.12);border:1px solid rgba(96,165,250,0.18);font-weight:600;font-size:0.95rem;transition:background 180ms ease,transform 120ms ease}
+    .back-link:hover{background:rgba(59,130,246,0.22);transform:translateY(-1px)}
+    .form-row{margin-bottom:12px}
+    input[type=text],input[type=password],input[type=email]{width:100%;padding:12px 14px;border-radius:12px;border:1px solid rgba(148,163,184,0.25);background:#f8fafc;color:#0f172a}
+    .btn{width:auto;max-width:260px;display:block;margin:6px auto 0;border:none;border-radius:14px;padding:10px 14px;background:linear-gradient(135deg,#3b82f6 0%,#2563eb 100%);color:#fff;font-weight:700;cursor:pointer;box-shadow:0 12px 30px rgba(37,99,235,0.2);font-size:1rem}
+    .forgot-link{display:block;text-align:center;margin-top:18px;color:#dbeafe;text-decoration:none;font-size:0.95rem;opacity:0.9;}
+    .forgot-link:hover{color:#fff;opacity:1;}
+    img[src*="mzuni-admin-logo"]{max-width:140px!important;max-height:140px!important;width:auto!important;height:auto!important;display:block!important;margin:0 auto 18px!important}
+    body>img,body>.banner,.page-header>img{display:none!important}
+</style>
+
+     
+</head>
+<body class="layout-fixed sidebar-expand-lg sidebar-open bg-body-tertiary   login-page accent-primary theme-default" data-admin-utc-offset="0">
+
+    <div class="app-wrapper">
+
+    
+        <nav class="app-header navbar navbar-expand bg-body navbar-white navbar-light" id="jazzy-navbar">
+        <div class="container-fluid">
+            <ul class="navbar-nav">
+
+                
+                    <li class="nav-item">
+                        <a class="nav-link" data-lte-toggle="sidebar" href="#" role="button"><i class="fas fa-bars"></i></a>
+                    </li>
+                
+
+                
+                
+            </ul>
+
+            
+
+            <ul class="navbar-nav ms-auto">
+
+                
+                
+
+                
+
+                
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link btn" data-bs-toggle="dropdown" href="#" title="AnonymousUser">
+                        <i class="far fa-user" aria-hidden="true"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end" id="jazzy-usermenu">
+                        <span class="dropdown-header">Account</span>
+                        <div class="dropdown-divider"></div>
+                        <a href="/admin/password_change/" class="dropdown-item">
+                            <i class="fas fa-key me-2"></i> Change password
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <form id="logout-form" method="post" action="/admin/logout/">
+                            <input type="hidden" name="csrfmiddlewaretoken" value="uRAWRuWzZIkQZVz6uw4e7I89gUX2bF0rmkFdw267pLcuQtZX8cuOn5LpfkJleHty">
+                            <button type="submit" class="dropdown-item"><i class="fas fa-users me-2"></i> Log out</button>
+                        </form>
+                        
+                        
+                        <div class="dropdown-divider"></div>
+                        
+                    </div>
+                </li>
+            </ul>
+        </div>
+        </nav>
+        
+        
+            
+
+            <aside class="app-sidebar bg-body-secondary shadow sidebar-dark-primary" id="jazzy-sidebar" data-bs-theme="dark">
+                <div class="sidebar-brand">
+                    <a href="/admin/" class="brand-link " id="jazzy-logo">
+                        <img src="/static/images/mzuni-admin-logo.png" alt="Mzuni Timetable System Admin Logo" class="img-fluid brand-image opacity-75 shadow">
+                        <span class="brand-text fw-light">Mzuni Timetable System</span>
+                    </a>
+                </div>
+
+                <div class="sidebar-wrapper">
+                    <div class="user-panel d-flex">
+                        <div class="image">
+                            
+                                <i class="fas fa-inverse user-profile fa-user-circle"></i>
+                            
+                        </div>
+                        <div class="info">
+                            
+                                <span class="d-block opacity-75">AnonymousUser</span>
+                            
+                        </div>
+                    </div>
+
+                    <nav class="mt-2">
+                        <ul class="nav sidebar-menu flex-column " data-lte-toggle="treeview" role="navigation" aria-label="Main navigation" data-accordion="false" id="jazzy-navigation">
+
+                            <li class="nav-item">
+                                <a href="/admin/" class="nav-link">
+                                    <i class="nav-icon fas fa-th-large"></i>
+                                    <p>Dashboard</p>
+                                </a>
+                            </li>
+
+                            
+                                
+                            
+                        </ul>
+                    </nav>
+                </div>
+            </aside>
+        
+        
+    
+
+    <main class="app-main" >
+        
+            
+            <div class="app-content-header">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h3 class="mb-0"></h3>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="float-sm-end"></div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+
+            <div class="app-content">
+                <div class="container-fluid">
+                    
+                        
+                    
+                    <div class="row">
+                        
+<div class="login-card">
+    <div class="login-brand">
+        <img src="/static/images/mzuni-admin-logo.png" alt="Mzuni Logo" />
+        <h1>Mzuni Admin</h1>
+    </div>
+    <p>Sign in to manage timetable data, lecturers, and scheduling records.</p>
+
+    <a class="back-link" href="/dashboard/">← Back to Dashboard</a>
+
+    
+
+    <form action="/admin/login/?next=%2Fadmin%2F" method="post" id="login-form">
+        <input type="hidden" name="csrfmiddlewaretoken" value="uRAWRuWzZIkQZVz6uw4e7I89gUX2bF0rmkFdw267pLcuQtZX8cuOn5LpfkJleHty">
+        <input type="hidden" name="next" value="/admin/" />
+
+        <div class="form-row">
+            <label for="id_username" class="required">Username:</label>
+            <input type="text" name="username" autofocus="" autocapitalize="none" autocomplete="username" maxlength="150" class="border border-base-200 bg-white font-medium min-w-20 placeholder-base-400 rounded-default shadow-xs text-font-default-light text-sm focus:outline-2 focus:-outline-offset-2 focus:outline-primary-600 group-[.errors]:border-red-600 focus:group-[.errors]:outline-red-600 dark:bg-base-900 dark:border-base-700 dark:text-font-default-dark dark:group-[.errors]:border-red-500 dark:focus:group-[.errors]:outline-red-500 dark:scheme-dark group-[.primary]:border-transparent disabled:!bg-base-50 dark:disabled:!bg-base-800 px-3 py-2 w-full" required id="id_username">
+        </div>
+
+        <div class="form-row">
+            <label for="id_password" class="required">Password:</label>
+            <input type="password" name="password" autocomplete="current-password" class="border border-base-200 bg-white font-medium min-w-20 placeholder-base-400 rounded-default shadow-xs text-font-default-light text-sm focus:outline-2 focus:-outline-offset-2 focus:outline-primary-600 group-[.errors]:border-red-600 focus:group-[.errors]:outline-red-600 dark:bg-base-900 dark:border-base-700 dark:text-font-default-dark dark:group-[.errors]:border-red-500 dark:focus:group-[.errors]:outline-red-500 dark:scheme-dark group-[.primary]:border-transparent disabled:!bg-base-50 dark:disabled:!bg-base-800 px-3 py-2 w-full" required id="id_password">
+        </div>
+
+        <div class="submit-row">
+            <input type="submit" value="Log in" class="btn" />
+        </div>
+    </form>
+    <a class="forgot-link" href="/accounts/password-reset/">Forgot password?</a>
+</div>
+
+                    </div>
+                </div>
+            </div>
+
+
+        
+    </main>
+
+
+    
+        <footer class="app-footer ">
+            <div class="float-end d-none d-sm-inline">
+                <b>Jazzmin version</b> 3.0.5
+            </div>
+            
+                <strong>Copyright &copy; 2026 Mzuni.</strong> All rights reserved.
+            
+        </footer>
+        
+    
+
+
+    </div>
+
+
+
+<!-- jQuery -->
+<script src="/static/admin/js/vendor/jquery/jquery.js"></script>
+<!-- Bootstrap 5 -->
+<script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App -->
+<script src="/static/vendor/adminlte/js/adminlte.min.js"></script>
+<!-- Django customisations -->
+<script src="/static/jazzmin/js/main.js"></script>
+
+
+
+
+
+
+
+</body>
+</html>
