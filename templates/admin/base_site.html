@@ -40,6 +40,23 @@
         display:none !important;
     }
 
+    /* Hide everything except the custom login/reset card on auth pages */
+    body.login :not(.login-card):not(.login-card *),
+    body.login-page :not(.login-card):not(.login-card *),
+    body.password-reset :not(.login-card):not(.login-card *),
+    body.password-reset-page :not(.login-card):not(.login-card *) {
+        display: none !important;
+    }
+
+    body.login .login-card,
+    body.login-page .login-card,
+    body.password-reset .login-card,
+    body.password-reset-page .login-card {
+        display: block !important;
+        position: relative !important;
+        z-index: 9999 !important;
+    }
+
     /* Constrain mzuni logo */
     img[src*="mzuni-admin-logo"]{ max-width:140px !important; max-height:140px !important; width:auto !important; height:auto !important; display:inline-block !important; vertical-align:middle !important }
     .compact-branding{ display:flex; align-items:center; gap:12px; font-weight:700; color:#fff; text-decoration:none }
