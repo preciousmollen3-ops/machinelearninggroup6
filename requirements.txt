@@ -1,6 +1,8 @@
 asgiref==3.11.1
 charset-normalizer==3.4.7
 Django==6.0.6
+django-jazzmin==3.0.5
+django-unfold==0.99.0
 gunicorn
 joblib==1.5.3
 narwhals==2.22.1
