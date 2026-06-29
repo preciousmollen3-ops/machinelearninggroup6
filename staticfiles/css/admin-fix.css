@@ -18,6 +18,19 @@ body.password-reset-page .branding-large img,
 body.password-reset-page .site-header img,
 body.password-reset-page .topbar img { display:none !important; max-width:0 !important; max-height:0 !important; }
 
+body.login-page .app-sidebar,
+body.login-page .jazzmin-sidebar,
+body.login-page .sidebar,
+body.login-page .navbar-header,
+body.login-page .topbar,
+body.login-page .header,
+body.password-reset-page .app-sidebar,
+body.password-reset-page .jazzmin-sidebar,
+body.password-reset-page .sidebar,
+body.password-reset-page .navbar-header,
+body.password-reset-page .topbar,
+body.password-reset-page .header { display:none !important; }
+
 /* Hide background images referencing mzuni logos on login/reset pages */
 body.login-page [style*="mzuni-admin-logo"],
 body.password-reset-page [style*="mzuni-admin-logo"] { background-image: none !important; }
