@@ -4,6 +4,7 @@ from django.db import models
 
 class Department(models.Model):
     name = models.CharField(max_length=100)
+    description = models.TextField(blank=True, default="")
 
     def __str__(self):
         return self.name
@@ -12,8 +13,13 @@ class Department(models.Model):
 class Program(models.Model):
     code = models.CharField(max_length=20, unique=True, null=True, blank=True)
     name = models.CharField(max_length=100)
-    level = models.IntegerField(choices=[(1, 1), (2, 2), (3, 3), (4, 4)], default=1)
+    level = models.IntegerField(choices=[(1, 1), (2, 2), (3, 3), (4, 4), (5, 5)], default=1)
     department = models.ForeignKey(Department, on_delete=models.PROTECT)
+    is_active = models.BooleanField(default=True)
+    rooms = models.ManyToManyField("Room", blank=True, related_name="assigned_programs")
+
+    def assigned_rooms(self):
+        return ", ".join(room.name for room in self.rooms.all())
 
     def __str__(self):
         return self.code or self.name
@@ -21,7 +27,7 @@ class Program(models.Model):
 
 class Lecturer(models.Model):
     name = models.CharField(max_length=100)
-    email = models.EmailField(unique=True)
+    email = models.EmailField(unique=True, blank=True, null=True)
     employee_id = models.CharField(max_length=30, unique=True, null=True, blank=True)
     department = models.ForeignKey(Department, on_delete=models.PROTECT, null=True, blank=True)
     max_hours_per_day = models.IntegerField(default=6)
@@ -44,6 +50,9 @@ class Room(models.Model):
     name = models.CharField(max_length=50)
     capacity = models.IntegerField()
     room_type = models.CharField(max_length=30, choices=ROOM_TYPES, default="Lecture Hall")
+
+    def assigned_program_names(self):
+        return ", ".join(program.name for program in self.assigned_programs.all())
 
     def __str__(self):
         return self.name
@@ -86,15 +95,24 @@ class Course(models.Model):
     title = models.CharField(max_length=100)
     code = models.CharField(max_length=20, unique=True)
 
-    program = models.ForeignKey(Program, on_delete=models.PROTECT)
+    programs = models.ManyToManyField(Program, blank=True, related_name="courses")
     lecturer = models.ForeignKey(Lecturer, on_delete=models.SET_NULL, null=True, blank=True)
+    department = models.ForeignKey(Department, on_delete=models.PROTECT, null=True, blank=True)
 
     weekly_hours = models.IntegerField()
+    student_count = models.PositiveIntegerField(default=0)
     difficulty_score = models.FloatField(default=0.0)
 
     is_lab = models.BooleanField(default=False)
     is_mathematical = models.BooleanField(default=False)
     is_technical = models.BooleanField(default=False)
+
+    @property
+    def program(self):
+        return self.programs.first()
+
+    def program_names(self):
+        return ", ".join(program.name for program in self.programs.all())
 
     def __str__(self):
         return f"{self.code} - {self.title}"
@@ -144,7 +162,7 @@ class Timetable(models.Model):
         on_delete=models.PROTECT
     )
     course = models.ForeignKey(Course, on_delete=models.PROTECT)
-    lecturer = models.ForeignKey(Lecturer, on_delete=models.PROTECT)
+    lecturer = models.ForeignKey(Lecturer, on_delete=models.PROTECT, null=True, blank=True)
     room = models.ForeignKey(Room, on_delete=models.PROTECT)
     semester = models.ForeignKey(Semester, on_delete=models.PROTECT)
 

@@ -44,7 +44,7 @@ class CourseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Course
-        fields = ["id", "code", "title", "program", "lecturer", "weekly_hours", "difficulty_score", "is_lab", "is_mathematical", "is_technical", "difficulty"]
+        fields = ["id", "code", "title", "program", "lecturer", "weekly_hours", "student_count", "difficulty_score", "is_lab", "is_mathematical", "is_technical", "difficulty"]
 
     def get_difficulty(self, obj):
         return CourseDifficultyPredictionSerializer(getattr(obj, "coursedifficultyprediction", None)).data if hasattr(obj, "coursedifficultyprediction") else None

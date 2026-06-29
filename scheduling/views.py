@@ -1,3 +1,4 @@
+import re
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from django.http import HttpResponse
@@ -14,6 +15,45 @@ from .models import (
 
 SLOTS = ["07:45", "09:45", "11:45", "13:45", "15:45", "17:45"]
 DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+
+
+def resolve_academic_semester(semester_name=None, academic_semester=None):
+    if academic_semester in {1, "1"}:
+        return 1
+    if academic_semester in {2, "2"}:
+        return 2
+
+    if semester_name:
+        match = re.search(r"semester\s*([12])\b", str(semester_name), re.IGNORECASE)
+        if match:
+            return int(match.group(1))
+
+    return None
+
+
+def build_student_group_code(program_code, program_level, academic_semester):
+    if academic_semester in {None, ""}:
+        return f"{program_code} {program_level}"
+    return f"{program_code} {program_level}{academic_semester}"
+
+
+def get_export_group_rows(programs, academic_semester=None):
+    sorted_programs = sorted(
+        programs,
+        key=lambda p: (getattr(p, "level", 0), (p.code or p.name).upper()),
+    )
+
+    if academic_semester is None:
+        return [(program, program.code or program.name) for program in sorted_programs]
+
+    return [
+        (
+            program,
+            build_student_group_code(program.code or program.name, getattr(program, "level", 1), academic_semester),
+        )
+        for program in sorted_programs
+    ]
+
 
 # =========================
 # CONFLICT DETECTION
@@ -298,7 +338,7 @@ def api_preview_difficulties(request):
     except Program.DoesNotExist:
         return Response({"success": False, "message": "Program not found"}, status=404)
 
-    courses = Program.objects.get(code=program_code).course_set.all()
+    courses = Program.objects.get(code=program_code).courses.all()
     result = []
     for c in courses:
         pred = CourseDifficultyPrediction.objects.filter(course=c).first()
@@ -326,6 +366,8 @@ def api_export_timetable_xlsx(request):
     if semester is None:
         semester = Semester.objects.first()
 
+    academic_semester = resolve_academic_semester(semester_name=semester.name if semester else None, academic_semester=request.GET.get("academic_semester"))
+
     programs = []
     if all_programs:
         programs = list(Program.objects.all())
@@ -340,6 +382,8 @@ def api_export_timetable_xlsx(request):
         generate_timetable(prog, semester)
 
     wb = openpyxl.Workbook()
+    export_rows = get_export_group_rows(programs, academic_semester)
+
     # create sheets for Monday-Friday
     for day in DAYS:
         ws = wb.create_sheet(title=day)
@@ -364,8 +408,8 @@ def api_export_timetable_xlsx(request):
             ws.cell(row=3, column=i, value=format_am_pm(end))
 
         row = 4
-        for prog in programs:
-            ws.cell(row=row, column=1, value=prog.code or prog.name)
+        for prog, label in export_rows:
+            ws.cell(row=row, column=1, value=label)
 
             for i, pair in enumerate(slots, start=2):
                 start = pair[0] if isinstance(pair, (list, tuple)) else pair

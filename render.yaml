@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: timetable-system
+    env: python
+    buildCommand: ./build.sh
+    startCommand: gunicorn timetable_system.wsgi:application
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: timetable-system-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      - key: ALLOWED_HOSTS
+        value: "localhost,127.0.0.1,.onrender.com"
+      - key: USE_WHITENOISE
+        value: "True"

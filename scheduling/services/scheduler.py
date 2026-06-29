@@ -97,8 +97,18 @@ def is_free(room, lecturer, day, start, end) -> bool:
     return not (room_conflict or lecturer_conflict)
 
 
-def get_available_room(day, start, end) -> Optional[Room]:
-    for room in Room.objects.all():
+def get_available_room(program, course, day, start, end) -> Optional[Room]:
+    required_capacity = max(getattr(course, "student_count", 0), 0)
+
+    if program and program.rooms.exists():
+        rooms = program.rooms.all()
+    else:
+        rooms = Room.objects.all()
+
+    if required_capacity > 0:
+        rooms = rooms.filter(capacity__gte=required_capacity)
+
+    for room in rooms.order_by("name"):
         occupied = Timetable.objects.filter(
             room=room, day=day, start_time__lt=end, end_time__gt=start
         ).exists()
@@ -138,7 +148,7 @@ def get_slot_window(course):
 def generate_timetable(program, semester):
     Timetable.objects.filter(program=program, semester=semester).delete()
 
-    courses = Course.objects.filter(program=program).order_by("code")
+    courses = Course.objects.filter(programs=program).order_by("code")
     courses = sorted(courses, key=difficulty_rank, reverse=True)
 
     for course in courses:
@@ -162,7 +172,7 @@ def generate_timetable(program, semester):
                 if not can_assign_lecturer(course.lecturer, day, duration):
                     continue
 
-                room = get_available_room(day, start_time, end_time)
+                room = get_available_room(program, course, day, start_time, end_time)
                 if room is None:
                     continue
 
@@ -196,7 +206,7 @@ def generate_timetable(program, semester):
                     if not can_assign_lecturer(course.lecturer, day, duration):
                         continue
 
-                    room = get_available_room(day, start_time, end_time)
+                    room = get_available_room(program, course, day, start_time, end_time)
                     if room is None:
                         continue
 

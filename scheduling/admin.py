@@ -29,19 +29,23 @@ class DepartmentAdmin(admin.ModelAdmin):
 
 @admin.register(Program)
 class ProgramAdmin(admin.ModelAdmin):
-    list_display = ("name", "department")
-    list_filter = ("department",)
+    list_display = ("name", "code", "department", "is_active", "assigned_rooms")
+    list_filter = ("department", "is_active")
+    search_fields = ("name", "code")
+    filter_horizontal = ("rooms",)
 
 
 @admin.register(Lecturer)
 class LecturerAdmin(admin.ModelAdmin):
-    list_display = ("name", "email")
-    search_fields = ("name", "email")
+    list_display = ("name", "employee_id", "email", "department", "availability_status")
+    search_fields = ("name", "email", "employee_id")
+    list_filter = ("department", "availability_status")
 
 
 @admin.register(Room)
 class RoomAdmin(admin.ModelAdmin):
-    list_display = ("name", "capacity")
+    list_display = ("name", "capacity", "room_type", "assigned_program_names")
+    search_fields = ("name",)
 
 
 @admin.register(TimeSlot)
@@ -58,9 +62,10 @@ class SemesterAdmin(admin.ModelAdmin):
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
-    list_display = ("code", "title", "program", "weekly_hours", "difficulty_score", "is_lab")
-    list_filter = ("program", "is_lab", "is_mathematical", "is_technical")
+    list_display = ("code", "title", "program_names", "department", "weekly_hours", "student_count", "difficulty_score", "is_lab")
+    list_filter = ("department", "is_lab", "is_mathematical", "is_technical")
     search_fields = ("title", "code")
+    filter_horizontal = ("programs",)
     readonly_fields = ("difficulty_score",)
 
 
@@ -98,7 +103,7 @@ class CourseDifficultyPredictionAdmin(admin.ModelAdmin):
         return False
 
     def has_delete_permission(self, request, obj=None):
-        return False
+        return request.user.is_active and request.user.is_staff
 
 
 # =========================

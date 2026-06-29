@@ -6,7 +6,7 @@ from .views import password_reset_request, password_reset_verify, open_admin
 urlpatterns = [
     path("", landing, name="landing"),
     path("dashboard/", dashboard, name="dashboard"),
-    path("admin/open/", open_admin, name="open_admin"),
+    path("open-admin/", open_admin, name="open_admin"),
     path("timetable/", timetable_view, name="timetable"),
     path("timetable/pdf/", export_timetable_pdf, name="timetable_pdf"),
     # Password reset by code
